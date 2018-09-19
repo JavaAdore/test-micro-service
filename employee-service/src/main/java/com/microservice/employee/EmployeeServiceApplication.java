@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.microservice.employee.entity.Employee;
 import com.microservice.employee.rest.EmployeeJpaRestRepository;
 
- 
+
 @SpringBootApplication
 public class EmployeeServiceApplication {
 	
