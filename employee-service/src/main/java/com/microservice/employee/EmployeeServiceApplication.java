@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import com.microservice.employee.rest.EmployeeJpaRestRepository;
 
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class EmployeeServiceApplication {
 	
 	Logger logger = LoggerFactory.getLogger(EmployeeServiceApplication.class);
