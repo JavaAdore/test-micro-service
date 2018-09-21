@@ -1,5 +1,6 @@
 package com.employee.client.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.employee.client.model.reponse.Employee;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class EmployeeApiGatewayRestController {
@@ -31,12 +33,18 @@ public class EmployeeApiGatewayRestController {
 	}
 	
 	
+	@HystrixCommand(fallbackMethod="findAllEmployeesFallBack")
 	@GetMapping(path="/findAllEmployees")
 	public List<Employee> findAllEmployees()
 	{
 		ParameterizedTypeReference<Resources<Employee>> employees = new ParameterizedTypeReference<Resources<Employee>>() {};
 		ResponseEntity<Resources<Employee>>  resp = restTemplate.exchange("http://EMPLOYEE-SERVICE/employees", HttpMethod.GET, null, employees);
 		return resp.getBody().getContent().stream().collect(Collectors.toList());
+	}
+	
+	public List<Employee> findAllEmployeesFallBack()
+	{
+		return new ArrayList<>();
 	}
 	
 	
