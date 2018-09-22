@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.employee.client.feign.EmployeeServiceClient;
 import com.employee.client.model.reponse.Employee;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -21,25 +23,26 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 public class EmployeeApiGatewayRestController {
 
 	
-	@Autowired
-	private RestTemplate restTemplate;
+	 
 	
+	@Autowired
+	private EmployeeServiceClient employeeServiceClient;
 	
 	@GetMapping(path="/getMessage")
 	public String getMessage()
 	{
-		ResponseEntity<String> resp = restTemplate.exchange("http://EMPLOYEE-SERVICE/refreshable/message", HttpMethod.GET, null, String.class);
-		return resp.getBody();
+//		ResponseEntity<String> resp = restTemplate.exchange("http://EMPLOYEE-SERVICE/refreshable/message", HttpMethod.GET, null, String.class);
+//		return resp.getBody();
+		return null;
 	}
 	
 	
-	@HystrixCommand(fallbackMethod="findAllEmployeesFallBack")
+//	@HystrixCommand(fallbackMethod="findAllEmployeesFallBack")
 	@GetMapping(path="/findAllEmployees")
 	public List<Employee> findAllEmployees()
 	{
-		ParameterizedTypeReference<Resources<Employee>> employees = new ParameterizedTypeReference<Resources<Employee>>() {};
-		ResponseEntity<Resources<Employee>>  resp = restTemplate.exchange("http://EMPLOYEE-SERVICE/employees", HttpMethod.GET, null, employees);
-		return resp.getBody().getContent().stream().collect(Collectors.toList());
+		List<Employee> res=  employeeServiceClient.findAllEmployees();
+ 		return res;
 	}
 	
 	public List<Employee> findAllEmployeesFallBack()
