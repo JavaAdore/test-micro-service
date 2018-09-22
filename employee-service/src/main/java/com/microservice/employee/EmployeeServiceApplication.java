@@ -12,8 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.microservice.employee.entity.Employee;
-import com.microservice.employee.rest.EmployeeJpaRestRepository;
-
+import com.microservice.employee.repository.EmployeeJpaRepository;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -28,7 +27,7 @@ public class EmployeeServiceApplication {
 	}
 	
 	@Bean 
-	CommandLineRunner commandLinerRunner(EmployeeJpaRestRepository employeeJpaRestRepository)
+	CommandLineRunner commandLinerRunner(EmployeeJpaRepository employeeJpaRestRepository)
 	{
 		logger.info("start initializing test data");
 		return strings ->
