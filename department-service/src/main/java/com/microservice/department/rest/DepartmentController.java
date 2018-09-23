@@ -12,43 +12,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.department.entity.Department;
-import com.microservice.department.repository.DepartmentJpaRepository;
+import com.microservice.department.service.DepartmentService;
 
 @RestController
 public class DepartmentController {
 
 	@Autowired
-	private DepartmentJpaRepository departmentJpaRepository;
+	private DepartmentService departmentService;
+	
 	
 	@GetMapping(path="/departments")
 	public List<Department> findAll()
 	{
-		return departmentJpaRepository.findAll();
+		return departmentService.findAll();
 	}
 	
 	@GetMapping(path="departments/{id}")
 	public Department findDepartment(@PathVariable("id") Long id)
 	{
-		return departmentJpaRepository.getOne(id);
+		return departmentService.findDepartment(id);
 	}
 	
 	
 	@PostMapping(path="/departments")
 	public Department add(@RequestBody Department department)
 	{
-		return departmentJpaRepository.save(department);
+		return departmentService.add(department);
 	}
 	
-	@PutMapping(path="/departments")
-	public Department update(  @RequestBody Department department)
+	@PutMapping(path="/departments/{id}")
+	public Department update( @PathVariable(name="id" , required=true ) Long id, @RequestBody Department department)
 	{
-		return departmentJpaRepository.save(department);
+		return departmentService.update(id , department);
 	}
 	
 	@DeleteMapping(path="/departments/{departmentId}")
 	public void delete(@PathVariable("departmentId") Long departmentId)
 	{
-		departmentJpaRepository.deleteById(departmentId);
+		departmentService.delete(departmentId);
 	}
 	
 	
